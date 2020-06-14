@@ -16,7 +16,8 @@
 
 <script type="text/javascript">
     
-   
+   //intro
+
 
 function where ( place, x,y){
   let retval = "";
@@ -43,9 +44,8 @@ let angle = 0.0;
 let jitter = 0.0;
 let a;
 let b;
-let tex;
 let starsize = 50;
-let aw= 150;
+let aw= 150; 
 let ah = 150;
 function setup() {
   createCanvas(720, 400);
@@ -68,9 +68,9 @@ function setup() {
     
     if(int(dis)<45 && int(dis)> 35) { 
       let wh = where(center,x,y);
-     if(wh=="A") a.set(x,y,color(255,0,0));
-      if(wh=="B") a.set(x,y,color(0,255,0));
-       if(wh=="C") a.set(x,y,color(0,0,255));
+     if(wh=="A") a.set(x,y,color(255,0,0,50));
+      if(wh=="B") a.set(x,y,color(0,255,0,50));
+       if(wh=="C") a.set(x,y,color(0,0,255,50));
         if(wh=="D") a.set(x,y,color(255,128,0));
      if(wh=="A") b.set(x,y,color(255,0,0));
       if(wh=="B") b.set(x,y,color(0,255,0));
@@ -83,25 +83,15 @@ function setup() {
   b.updatePixels();
   bounce();
   background(1);
-  stroke(255);
-  for (let i=0; i<144; i++){
-    point(random(w),random(h));
-  }
-  tex= get();
 }
 let totpix=0;
 let rotspeed = 4;
-let seetrail = false;
 function draw() {
-    bounce();
-  imageMode(CORNER);
-  if(seetrail==false)image(tex,0,0);
-  
-    //background(51);
+   for (let i=0;i<2;i++) bounce();
+  //background(51);
   fill(1,33);
-  if(mouseIsPressed)seetrail= !seetrail;
-  if(seetrail==true)rect(0,0,w,h);
-imageMode(CENTER);
+  rect(0,0,w,h);
+
   // during even-numbered seconds (0, 2, 4, 6...) add jitter to
   // the rotation
   if (cnt % 2 == 1) {
@@ -146,7 +136,7 @@ imageMode(CENTER);
  let py=10;
  let forward = true;
   let up = true;
-let speed = 5;
+let speed = 1;
 function bounce() {
   if (forward){
   px+=speed;
@@ -182,10 +172,13 @@ function bounce() {
   if (py >height-starsize){
    up = true;
   }
- 
+	translate(px,py);
+ image(a,0,0);
+	      translate(-px,-py);
  //ellipse(mouseX,mouseY,10,10);
   
 }
+
 
  
 
