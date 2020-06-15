@@ -403,7 +403,8 @@ function pointe(A,B){
   noStroke();
   smooth();
   fill(255);
-  ellipse(A,B,1,1);
+  if(dopitch==false) ellipse(A,B,3,3);
+  if(dopitch==true)ellipse(A,B,1,1);
 }
 
 
