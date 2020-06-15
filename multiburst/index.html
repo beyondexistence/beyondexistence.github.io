@@ -145,8 +145,11 @@ let pitchcount = 0;
 
 let pulseup = true;
 let pulsesize=1;
+let starpitch=0;
 function draw() {
   pitchcount ++;
+  starpitch++;
+  
   
   if(pitchcount%8==0)pulseup=!pulseup;
   if(pulseup==true)pulsesize++;
@@ -157,6 +160,16 @@ function draw() {
   
   if(dopitch==true){
     image(tex,0,0);
+    if(starpitch>244)starpitch=0;
+    for (let i=0;i<6;i++){
+   if(i==0)point(stars[i].x-starpitch,stars[i].y+starpitch); 
+   if(i==1)point(stars[i].x,stars[i].y+starpitch); 
+     if(i==2)point(stars[i].x+starpitch,stars[i].y+starpitch);  
+      if(i==3)point(stars[i].x+starpitch,stars[i].y); 
+      if(i==4)point(stars[i].x+starpitch,stars[i].y-starpitch); 
+      if(i==5)point(stars[i].x,stars[i].y-starpitch); 
+      if(i==5)point(stars[i].x-starpitch,stars[i].y-starpitch); 
+  }
     for (let i=0;i<6;i++){
       //print
       //strokeWeight(pulsesize);
@@ -403,7 +416,7 @@ function pointe(A,B){
   noStroke();
   smooth();
   fill(255);
-  if(dopitch==false) ellipse(A,B,3,3);
+ if(dopitch==false) ellipse(A,B,3,3);
   if(dopitch==true)ellipse(A,B,1,1);
 }
 
