@@ -20,12 +20,12 @@
 //Beyond Ultra Realtime Surreality Transitioning
 let img;
 function preload(){
-	//img = loadImage('https://beyondexistence.github.io/assets/img/twlogo.jpg');
   img = loadImage('https://pbs.twimg.com/profile_images/1268231100813451268/kVdtuqPr_400x400.jpg');
 }
 
-let burstmode = 1;
 
+let burstmode = 1;
+let dopitch = true;
 function where ( place, x,y){
   let retval = "";
   if(x<=place.x && y<=place.y)retval = "A";
@@ -125,7 +125,7 @@ point(places[i].x,places[i].y);
   }
 	
 	
-  for (let i=1;i<6;i++){
+  for (let i=0;i<6;i++){
   pointe(stars[i].x,stars[i].y);
 //if(i<5)line(stars[i].x,stars[i].y,stars[i+1].x,stars[i+1].y);
 		//xpos[i]=stars[i].x;
@@ -140,7 +140,38 @@ let imgpix= 0;
 let rotspeed = 4;
 let seetrail = false;
 let dis1 = 0.0;
+
+let pitchcount = 0;
+
+let pulseup = true;
+let pulsesize=1;
 function draw() {
+  pitchcount ++;
+  
+  if(pitchcount%8==0)pulseup=!pulseup;
+  if(pulseup==true)pulsesize++;
+  if(pulseup==false)pulsesize--;
+  
+  if(pitchcount>444)dopitch=false;
+  
+  
+  if(dopitch==true){
+    image(tex,0,0);
+    for (let i=0;i<6;i++){
+      //print
+      //strokeWeight(pulsesize);
+      
+  pointe(stars[i].x,stars[i].y);
+      noFill();
+      stroke(255);
+      ellipse(stars[i].x,stars[i].y,pulsesize*2,pulsesize*2);
+//if(i<5)line(stars[i].x,stars[i].y,stars[i+1].x,stars[i+1].y);
+		//xpos[i]=stars[i].x;
+		//ypos[i]=stars[i].y;
+  }
+  }
+  
+  if(dopitch==false){
    
   imageMode(CORNER);
  // if(seetrail==false)image(tex,0,0);
@@ -258,6 +289,7 @@ update(3,stars[4].x,stars[4].y);
       image(img,width/2,height/2);
      noLoop();}
   }
+  }
 }
 
 let imgn;
@@ -370,8 +402,8 @@ function pointe(A,B){
  strokeWeight(1);
   noStroke();
   smooth();
-  fill(255,0,0);
-  ellipse(A,B,3,3);
+  fill(255);
+  ellipse(A,B,1,1);
 }
 
 
