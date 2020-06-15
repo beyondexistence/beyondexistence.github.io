@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>beyondexists-website-redesign</title>
+    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/Corporate-Footer-Clean.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+
+<body>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+
+<script type="text/javascript">
+    
+   //BURST
+//Beyond Ultra Realtime Surreality Transitioning
+let img;
+function preload(){
+  img = loadImage('https://pbs.twimg.com/profile_images/1268231100813451268/kVdtuqPr_400x400.jpg');
+}
+
+let burstmode = 2;
+
+function where ( place, x,y){
+  let retval = "";
+  if(x<=place.x && y<=place.y)retval = "A";
+  if(x>=place.x && y<=place.y)retval = "B";
+  if(x<=place.x&& y>=place.y)retval="C";
+  if(x>=place.x && y>=place.y)retval="D";
+  
+ return retval; 
+  
+}
+
+let hidetracker = true;
+let w = 720
+let h = 400
+
+let burstval = 144;
+let burstcnt = 0;
+
+let center;
+let resetcount = 100;
+let cnt = 0;
+
+
+let angle = 0.0;
+let jitter = 0.0;
+let a;
+let b;
+let tex;
+let starsize = 50;
+let aw= 150;
+let ah = 150;
+let stars = [];
+let places = [];
+let centof;
+function setup() {
+  createCanvas(720, 400);
+  center = createVector(aw/2,ah/2);
+  totpix= aw*ah;
+  cnt=0;
+  noStroke();
+  fill(255);
+  //Draw the rectangle from the center and it will also be the
+  //rotate around that center
+//rectMode(CENTER);
+    a=createImage(aw,ah);
+  b= createImage(aw,ah);
+  
+  a.loadPixels();
+  b.loadPixels();
+  for (let x=0;x<aw;x+=1){
+   for (let y=0;y<ah;y+=1){
+    let dis = dist(x,y,center.x,center.y);
+    
+    if(int(dis)<45 && int(dis)> 35) { 
+      let wh = where(center,x,y);
+     if(wh=="A") a.set(x,y,color(255,0,0));
+      if(wh=="B") a.set(x,y,color(0,255,0));
+       if(wh=="C") a.set(x,y,color(0,0,255));
+        if(wh=="D") a.set(x,y,color(255,128,0));
+     if(wh=="A") b.set(x,y,color(255,0,0));
+      if(wh=="B") b.set(x,y,color(0,255,0));
+       if(wh=="C") b.set(x,y,color(0,0,255));
+        if(wh=="D") b.set(x,y,color(255,128,0));
+    }
+   } 
+  }
+  a.updatePixels();
+  b.updatePixels();
+  bounce();
+  background(1);
+  stroke(255);
+  //places = new PVector[144];
+  for (let i=0; i<144; i++){
+//point(random(w),random(h));
+    places[i] = createVector(random(w),random(h));
+point(places[i].x,places[i].y);
+  }
+  
+  centof = createVector(w/2,h/2);
+  stars[0]= createVector(centof.x,centof.y-66);
+  stars[1]= createVector(centof.x-66,centof.y-33);
+  stars[2]= createVector(centof.x-66,centof.y+33);
+  stars[3]= createVector(centof.x,centof.y+66);
+  stars[4]= createVector(centof.x+66,centof.y+33);
+  stars[5]= createVector(centof.x+66,centof.y-33);
+  strokeWeight(4);
+  //line(stars[5].x,stars[5].y,stars[0].x,stars[0].y);
+	
+	 for (let i=0;i<6;i++){
+ 
+		xpos[i]=stars[i].x;
+          //stars[i].x;
+		ypos[i]= stars[i].y;
+          //stars[i].y;
+  }
+	
+	
+  for (let i=1;i<6;i++){
+  pointe(stars[i].x,stars[i].y);
+//if(i<5)line(stars[i].x,stars[i].y,stars[i+1].x,stars[i+1].y);
+		//xpos[i]=stars[i].x;
+		//ypos[i]=stars[i].y;
+  }
+  
+  
+  tex= get();
+}
+let totpix=0;
+let rotspeed = 4;
+let seetrail = false;
+let dis1 = 0.0;
+function draw() {
+   
+  imageMode(CORNER);
+ // if(seetrail==false)image(tex,0,0);
+  
+    //background(51);
+  fill(1,33);
+if(hidetracker==false){
+  
+   bounce();
+  if(mouseIsPressed)seetrail= !seetrail;
+  if(seetrail==true)rect(0,0,w,h);
+imageMode(CENTER);
+  // during even-numbered seconds (0, 2, 4, 6...) add jitter to
+  // the rotation
+  if (cnt % 2 == 1) {
+  jitter = random(-0.4, 0.4);
+  }
+  //increase the angle value using the most recent jitter value
+  if(forward == true)angle = angle + rotspeed; 
+  if(forward == false)angle = angle - rotspeed;
+
+//2
+  //use cosine to get a smooth CW and CCW motion when not jittering
+  let c = radians(angle);
+      //cas(radians(angle));
+  //move the shape to the center of the canvas
+  translate(px , py);
+  //apply the final rotation
+  rotate(c);
+  imageMode(CENTER);
+  image(a,0,0);
+  //loadPixels();
+  //a=get();
+ // a.mask(b);
+  //ct(0, 0, 180, 180);
+  cnt++;
+ if(cnt>resetcount){
+   cnt=0;
+   loadPixels();
+  for (let i=0;i< totpix;i++){
+   a.pixels[i]=b.pixels[i];
+     //color(255);
+     //b.pixels[i];
+  }
+ }
+  //a.updatePixels();
+  translate(-px , -py);
+}
+	stroke(255,0,0);
+  if(xpos[3]<426){
+  update(0,stars[1].x,stars[1].y);
+	update(1,stars[2].x,stars[2].y);
+	update(2,stars[3].x,stars[3].y);
+update(3,stars[4].x,stars[4].y);
+  
+  //disl = int(stars[5].x)-int(xpos[3]);
+  //print(int(xpos[3]));
+  //print(stars[5].x);
+  //print(dis1);
+ 
+	update(4,stars[5].x,stars[5].y);
+	update(5,stars[0].x,stars[0].y);
+	pointe(xpos[0],ypos[0]);
+	pointe(xpos[1],ypos[1]);
+	pointe(xpos[2],ypos[2]);
+	pointe(xpos[3],ypos[3]);
+	pointe(xpos[4],ypos[4]);
+	pointe(xpos[5],ypos[5]);
+  }
+   if(xpos[3]>426){
+    burstcnt++;
+     
+     if(burstmode==1){ //mutiple points
+       ellipseMode(CENTER);
+       fill(255);
+       for (let i=0;i<6;i++){
+         noStroke();
+         ellipse(stars[i].x,stars[i].y,burstcnt*burstcnt,burstcnt*burstcnt);
+         
+       }
+     }
+     if(burstmode==2){//centre point
+       ellipseMode(CENTER);
+       fill(255);
+       
+         noStroke();
+       ellipse(centof.x,centof.y,burstcnt*burstcnt,burstcnt*burstcnt);
+     }
+     if(burstcnt>burstval)
+     {background(255);
+     //white burst
+     //show logo
+     //allow to login
+      imageMode(CENTER);
+      image(img,width/2,height/2);
+     noLoop();}
+  }
+}
+
+
+
+
+ let px =10;
+ let py=10;
+ let forward = true;
+  let up = true;
+let speed = 5;
+function bounce() {
+  if (forward){
+  px+=speed;
+		//(int)random(1,10);
+  }
+  else
+  {
+   px-=speed;
+		 //(int)random(1,10);
+  }
+   
+  if (up){
+   py-=speed;
+		 //(int)random(cos(5),10);
+  }
+  else
+  {
+   py+=speed;
+		 //(int)random(5,10);
+    }
+  if (px>width-starsize){
+   forward = false;
+  }
+   
+  if (px<starsize){
+   forward = true;
+  }
+   
+  if (py<starsize){
+   up = false;
+  }
+   
+  if (py >height-starsize){
+   up = true;
+  }
+ 
+ //ellipse(mouseX,mouseY,10,10);
+
+  
+}
+
+
+let xpos = [] ;
+let  ypos=  [];
+let now = []
+function update(val,C,D) {
+
+let tar1 = stars [val];
+  now [val] = mx(xpos[val], ypos[val], C,D);
+let wh = whereto(xpos[val], ypos[val], C,D);
+  if (wh=="C") {
+    xpos[val]+=now[val].x;
+    ypos[val]-=now[val].y;
+  }
+  if (wh=="A") {
+    xpos[val]+=now[val].x;
+    ypos[val]+=now[val].y;
+  }
+  if (wh=="B") {
+    xpos[val]-=now[val].x;
+    ypos[val]+=now[val].y;
+  }
+  if (wh=="D") {
+    xpos[val]-=now[val].x;
+    ypos[val]-=now[val].y;
+  }
+}
+
+
+//let now;
+let speedx = 2.55; // controls speed
+function mx( Ax,  Bx,  C,D) {
+
+  let A = abs(Ax-C);
+  let B = abs(Bx-D);
+  let retval2;
+  retval2 = max(A, B);
+
+  let retval = createVector((A/retval2)/speedx, (B/retval2)/speedx, retval2);
+
+  return retval;
+}
+
+function whereto (A, B, C,D) {
+  let retval = "";
+
+  if (A<=C && B <=D)retval = "A";
+  if (A>C && B<D)retval = "B";
+  if (A<C && B>D)retval = "C";
+  if (A>=C & B>=D)retval = "D";
+
+
+
+  return retval;
+}
+
+
+function pointe(A,B){
+  
+ strokeWeight(1);
+  noStroke();
+  smooth();
+  fill(255,0,0);
+  ellipse(A,B,3,3);
+}
+
+
+
+
+
+
+
+
+new p5();</script>
+
+
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
