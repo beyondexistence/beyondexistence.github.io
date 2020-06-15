@@ -16,8 +16,7 @@
 
 <script type="text/javascript">
     
-   
-//BURST
+   //BURST
 //Beyond Ultra Realtime Surreality Transitioning
 let img;
 function preload(){
@@ -220,10 +219,13 @@ update(3,stars[4].x,stars[4].y);
        }
      }
      if(burstmode==2){//centre point
+       ellipseMode(CENTER);
+       fill(255);
        
-       
+         noStroke();
+       ellipse(centof.x,centof.y,burstcnt*burstcnt,burstcnt*burstcnt);
      }
-     if(burstcnt>burstval)
+     if(burstcnt>burstval/4)
      {background(255);
      //white burst
      //show logo
@@ -312,7 +314,7 @@ let wh = whereto(xpos[val], ypos[val], C,D);
 
 
 //let now;
-let speedx = 2.55; // controls speed
+let speedx = 0.55; // controls speed
 function mx( Ax,  Bx,  C,D) {
 
   let A = abs(Ax-C);
