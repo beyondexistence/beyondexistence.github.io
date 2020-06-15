@@ -40,7 +40,7 @@ let hidetracker = true;
 let w = 720
 let h = 400
 
-let burstval = 144;
+let burstval = 644; //144;
 let burstcnt = 0;
 
 let center;
@@ -63,6 +63,8 @@ function setup() {
   createCanvas(720, 400);
   center = createVector(aw/2,ah/2);
   totpix= aw*ah;
+  imgpix = img.width*img.height;
+  print(imgpix);
   cnt=0;
   noStroke();
   fill(255);
@@ -71,7 +73,7 @@ function setup() {
 //rectMode(CENTER);
     a=createImage(aw,ah);
   b= createImage(aw,ah);
-  
+  imga = createImage(img.width,img.height);
   a.loadPixels();
   b.loadPixels();
   for (let x=0;x<aw;x+=1){
@@ -133,6 +135,7 @@ point(places[i].x,places[i].y);
   tex= get();
 }
 let totpix=0;
+let imgpix= 0;
 let rotspeed = 4;
 let seetrail = false;
 let dis1 = 0.0;
@@ -209,14 +212,25 @@ update(3,stars[4].x,stars[4].y);
    if(xpos[3]>426){
     burstcnt++;
      
+     rectMode(CORNER);
+     fill(255,100+burstcnt);
+     rect(0,0,width,height);
      if(burstmode==1){ //mutiple points
        ellipseMode(CENTER);
-       fill(255);
+       fill(255,124);
        for (let i=0;i<6;i++){
          noStroke();
          ellipse(stars[i].x,stars[i].y,burstcnt*burstcnt,burstcnt*burstcnt);
          
        }
+       
+        imageMode(CENTER);
+    // fill(255,255-burstcnt);
+        
+      tint(255,burstcnt*2);
+       image(img,width/2,height/2);
+       //imga.updatePixels();
+      // image(img,width/2,height/2);
      }
      if(burstmode==2){//centre point
        ellipseMode(CENTER);
@@ -224,19 +238,27 @@ update(3,stars[4].x,stars[4].y);
        
          noStroke();
        ellipse(centof.x,centof.y,burstcnt*burstcnt,burstcnt*burstcnt);
+       imageMode(CENTER);
+    // fill(255,255-burstcnt);
+       image(img,width/2,height/2);
+       img.tint(255,burstcnt);
+       
+       
      }
      if(burstcnt>burstval/4)
      {background(255);
      //white burst
      //show logo
      //allow to login
-      imageMode(CENTER);
+     //imageMode(CENTER);
+      noTint();
+      background(255);
       image(img,width/2,height/2);
      noLoop();}
   }
 }
 
-
+let imgn;
 
 
  let px =10;
@@ -314,7 +336,7 @@ let wh = whereto(xpos[val], ypos[val], C,D);
 
 
 //let now;
-let speedx = 0.55; // controls speed
+let speedx = 2.55; // 0.55 controls speed
 function mx( Ax,  Bx,  C,D) {
 
   let A = abs(Ax-C);
